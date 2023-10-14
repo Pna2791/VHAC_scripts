@@ -45,7 +45,7 @@ for question in question_ebedding_dict:
     context_list = []
     for index in top_indices:
         text = results[index].page_content
-        context_list.appedn(text)
+        context_list.append(text)
     context_dict[question] = context_list
     
     
