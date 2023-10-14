@@ -31,7 +31,7 @@ def t5_embedding(context):
 
 import pandas as pd
 
-file_path = open('test_path.txt').read()
+file_path = open('data/test_path.txt').read()
 df = pd.read_csv(file_path)
 
 question_ebedding_dict = dict()
@@ -41,6 +41,6 @@ for question in df.question:
     sys_print('.')
 
 import torch
-torch.save(question_ebedding_dict, 'embeddings.pt')
+torch.save(question_ebedding_dict, 'data/embeddings.pt')
 print("==="*20)
 print("Convert to embedding vectors completed!")
