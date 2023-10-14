@@ -27,14 +27,12 @@ model_lora = PeftModel.from_pretrained(model, "CreatorPhan/Bloomz_lora_question"
 
 def get_request(prompt):
     input_ids = tokenizer(prompt, return_tensors="pt").input_ids
+    input_len = len(input_ids[0])
     input_ids = input_ids.to(model_lora.device)
 
-    output = model_lora.generate(input_ids=input_ids, max_length=seq_length)[0]
-    if len(output) > 64:
-        output = output[:64]
-    answer = tokenizer.decode(output.cpu(), skip_special_tokens=True)
-
-    return answer[len(prompt):]
+    output = model_lora.generate(input_ids=input_ids, max_new_tokens=128)[0]
+    answer = tokenizer.decode(output.cpu()[input_len:], skip_special_tokens=True)
+    return answer
 
 
 import pandas as pd
@@ -45,8 +43,9 @@ question_request_dict = dict()
 for question in df.question:
     requests = get_request(f"Liệt kê các yêu cầu của câu hỏi sau: {question}\n\n")
     question_request_dict[question] = requests
-    sys_print('.')
-    # print(question, '|', requests)
+    # sys_print('.')
+    print(">>>", question)
+    print(requests)
 
 import torch
 torch.save(question_request_dict, '../data/quest_explained.pt')
