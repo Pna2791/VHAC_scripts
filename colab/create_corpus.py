@@ -6,9 +6,9 @@ from preprocessor import PreProcessor
 
 text_pack = []
 count = 0
-preprocessor = PreProcessor(stop_words="./stopwords.csv", max_len=256, model_name='intfloat/multilingual-e5-large')
+preprocessor = PreProcessor(max_len=256, model_name='intfloat/multilingual-e5-large')
 
-for file_name, context in torch.load('./raw_contexts.pt'):
+for file_name, context in torch.load('data/raw_contexts.pt'):
     len_ = len(file_name)
     context = context[len_:].strip()
     for text in preprocessor.split(context):
@@ -42,4 +42,4 @@ embeddings = converter.t5_embedding(pack)
 for i in range(len(pack)):
     data_pack.append([pack[i], embeddings[i]])
 
-torch.save(data_pack,'data_raw_embed_256.pt')
+torch.save(data_pack,'data/data_raw_embed_256.pt')

@@ -3,10 +3,8 @@ import re
 import pandas as pd
 
 class PreProcessor:
-    def __init__(self, stop_words='./stopwords.csv', model_name='vilm/vietcuna-3b', max_len=512) -> None:
+    def __init__(self,model_name='vilm/vietcuna-3b', max_len=512) -> None:
         self.tokenizer = AutoTokenizer.from_pretrained(model_name)
-        data = pd.read_csv(stop_words, sep="\t", encoding='utf-8')
-        self.list_stopwords = data['stopwords']
         self.max_len = max_len
         
     def split(self, document, pre_fix=""):
